@@ -7,7 +7,7 @@ $(document).ready(function () {
   $("#identify").click(identifyController);
   $("#auth").click(getAuthToken);
   $("#getControllerState").click(getControllerState);
-  $("#on").click(setControllerState);
+  $("#toggle").click(toggleControllerPower);
 });
 
 getAuthToken = function () {
@@ -50,18 +50,33 @@ getControllerState = function () {
   );
 };
 
-setControllerState = function () {
+toggleControllerPower = function () {
   const endpoint = "state";
   let controllerAddress = $("#controllers").find(":selected").val();
-  $.ajax({
-    url: `${controllerAddress}${version}${authToken}/${endpoint}`,
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: '{"on":{"value":true}}',
-    done: function (response) {
-      console.log("Response: ", response);
-    },
-  });
+
+  const setPowerState = function (powerState) {
+    $.ajax({
+      url: `${controllerAddress}${version}${authToken}/${endpoint}`,
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: powerState,
+      done: function (response) {
+        console.log("Response: ", response);
+      },
+    });
+  };
+
+  // TODO make use of existing saved state
+  $.get(`${controllerAddress}${version}${authToken}/${endpoint}`, {}).done(
+    function (state) {
+      console.log(state);
+      if (state.on.value === true) {
+        setPowerState('{"on":{"value":false}}');
+      } else {
+        setPowerState('{"on":{"value":true}}');
+      }
+    }
+  );
 };
