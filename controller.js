@@ -1,3 +1,24 @@
+class NanoleafInterface {
+  constructor(controllerAddress) {
+    this.controllerAddress = controllerAddress;
+    this.authToken = localStorage.getItem("nc1_auth_token");
+    this.apiVersion = "/api/v1/";
+    this.controllerState = {};
+    this.getControllerState();
+  }
+  getControllerState() {
+    let parent = this;
+    const endpoint = "state";
+    let controllerAddress = $("#controllers").find(":selected").val();
+    $.get(`${controllerAddress}${version}${authToken}/${endpoint}`, {}).done(
+      function (response) {
+        console.log("Response: ", response);
+        parent.controllerState = response;
+      }
+    );
+  }
+}
+
 let authToken = localStorage.getItem("nc1_auth_token");
 const version = "/api/v1/";
 let controllerState = {};
