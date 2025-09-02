@@ -64,7 +64,7 @@ toggleControllerPower = function () {
       },
       data: powerState,
       success: function (response) {
-        console.log("Response: ", response);
+        getControllerState();
       },
     });
   };
@@ -78,8 +78,6 @@ toggleControllerPower = function () {
       } else {
         setPowerState('{"on":{"value":true}}');
       }
-      $("#powerIndicator").text(!state.on.value ? "On 🟢" : "Off 🔴");
-      //TODO: change this to be driven by the actual live value.
     }
   );
 };
