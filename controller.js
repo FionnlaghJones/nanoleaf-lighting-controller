@@ -1,4 +1,4 @@
-let authToken = "";
+let authToken = localStorage.getItem("nc1_auth_token");
 const version = "/api/v1/";
 let controllerState = {};
 
@@ -16,7 +16,9 @@ getAuthToken = function () {
     response
   ) {
     console.log("Response: ", response);
+    // TODO: move auth token to class property
     authToken = response.auth_token;
+    localStorage.setItem("nc1_auth_token", authToken);
   });
 };
 
