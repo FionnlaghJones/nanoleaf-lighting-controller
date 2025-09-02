@@ -1,16 +1,29 @@
+let authToken = "";
+const version = "/api/v1/";
+
 $(document).ready(function () {
   $("#identify").click(identifyController);
   $("#auth").click(getAuthToken);
 });
 
-identifyController = function () {
-  alert("identify button clicked");
+getAuthToken = function () {
+  const endpoint = "new";
+  let controllerAddress = $("#controllers").find(":selected").val();
+  $.post(`${controllerAddress}${version}${endpoint}`, {}).done(function (
+    response
+  ) {
+    console.log("Response: ", response);
+    authToken = response.auth_token;
+  });
 };
 
-getAuthToken = function () {
-  const endpoint = "/api/v1/new";
+identifyController = function () {
+  const endpoint = "identify";
   let controllerAddress = $("#controllers").find(":selected").val();
-  $.post(`${controllerAddress}${endpoint}`, {}).done(function (data) {
-    console.log("Data Loaded: ", data);
-  });
+  $.put(`${controllerAddress}${version}${authToken}/${endpoint}`, {}).done(
+    function (response) {
+      console.log("Response: ", response);
+      authToken = response.auth_token;
+    }
+  );
 };
