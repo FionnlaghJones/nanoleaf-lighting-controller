@@ -1,9 +1,12 @@
 let authToken = "";
 const version = "/api/v1/";
+let controllerState = {};
 
 $(document).ready(function () {
+  // Add event hooks to buttons
   $("#identify").click(identifyController);
   $("#auth").click(getAuthToken);
+  $("#getControllerState").click(getControllerState);
 });
 
 getAuthToken = function () {
@@ -31,4 +34,15 @@ identifyController = function () {
       console.error("Error: ", error);
     },
   });
+};
+
+getControllerState = function () {
+  const endpoint = "state";
+  let controllerAddress = $("#controllers").find(":selected").val();
+  $.get(`${controllerAddress}${version}${authToken}/${endpoint}`, {}).done(
+    function (response) {
+      console.log("Response: ", response);
+      controllerState = response;
+    }
+  );
 };
