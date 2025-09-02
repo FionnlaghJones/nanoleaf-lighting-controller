@@ -20,10 +20,15 @@ getAuthToken = function () {
 identifyController = function () {
   const endpoint = "identify";
   let controllerAddress = $("#controllers").find(":selected").val();
-  $.put(`${controllerAddress}${version}${authToken}/${endpoint}`, {}).done(
-    function (response) {
+  $.ajax({
+    url: `${controllerAddress}${version}${authToken}/${endpoint}`,
+    method: "PUT",
+    data: {},
+    success: function (response) {
       console.log("Response: ", response);
-      authToken = response.auth_token;
-    }
-  );
+    },
+    error: function (xhr, status, error) {
+      console.error("Error: ", error);
+    },
+  });
 };
