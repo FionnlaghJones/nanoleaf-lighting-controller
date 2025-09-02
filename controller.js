@@ -46,6 +46,7 @@ getControllerState = function () {
     function (response) {
       console.log("Response: ", response);
       controllerState = response;
+      $("#powerIndicator").text(controllerState.on.value ? "On 🟢" : "Off 🔴");
     }
   );
 };
@@ -62,7 +63,7 @@ toggleControllerPower = function () {
         "Content-Type": "application/json",
       },
       data: powerState,
-      done: function (response) {
+      success: function (response) {
         console.log("Response: ", response);
       },
     });
@@ -77,6 +78,8 @@ toggleControllerPower = function () {
       } else {
         setPowerState('{"on":{"value":true}}');
       }
+      $("#powerIndicator").text(!state.on.value ? "On 🟢" : "Off 🔴");
+      //TODO: change this to be driven by the actual live value.
     }
   );
 };
