@@ -7,6 +7,7 @@ $(document).ready(function () {
   $("#identify").click(identifyController);
   $("#auth").click(getAuthToken);
   $("#getControllerState").click(getControllerState);
+  $("#on").click(setControllerState);
 });
 
 getAuthToken = function () {
@@ -47,4 +48,20 @@ getControllerState = function () {
       controllerState = response;
     }
   );
+};
+
+setControllerState = function () {
+  const endpoint = "state";
+  let controllerAddress = $("#controllers").find(":selected").val();
+  $.ajax({
+    url: `${controllerAddress}${version}${authToken}/${endpoint}`,
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: '{"on":{"value":true}}',
+    done: function (response) {
+      console.log("Response: ", response);
+    },
+  });
 };
